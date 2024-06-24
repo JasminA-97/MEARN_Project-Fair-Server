@@ -49,6 +49,22 @@ exports.loginController = async (req,res)=>{
     }
 }
 
+//edit profile
+exports.editProfileController = async(req,res)=>{
+    console.log("inside editProfileController");
+    const {username,email,password,github,linkedin,profilePic} =req.body
+    const uploadImg = req.file?req.file.filename:profilePic
+    const userId = req.payload
+    try{
+        const updateUser = await users.findByIdAndUpdate({_id:userId},{username,email,password,github,linkedin,profilePic:uploadImg},{new:true})
+        await updateUser.save()
+        res.status(200).json(updateUser)
+    }catch(err){
+        res.status(401).json(err)
+    }
+
+}
+
 
 
 
